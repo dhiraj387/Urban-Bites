@@ -105,6 +105,22 @@ const initialOrderFormState = {
   notes: '',
 }
 
+const getMenuVisibleLimit = () => {
+  if (typeof window === 'undefined') {
+    return 6
+  }
+
+  if (window.innerWidth >= 1024) {
+    return 8
+  }
+
+  if (window.innerWidth < 640) {
+    return 3
+  }
+
+  return 6
+}
+
 function App() {
   const appRef = useRef(null)
   const menuSearchInputRef = useRef(null)
@@ -122,6 +138,7 @@ function App() {
   const [menuSearch, setMenuSearch] = useState('')
   const [menuSort, setMenuSort] = useState('recommended')
   const [showAllMenuItems, setShowAllMenuItems] = useState(false)
+  const [menuVisibleLimit, setMenuVisibleLimit] = useState(getMenuVisibleLimit)
   const [sliderShiftPercent, setSliderShiftPercent] = useState(-50)
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
@@ -153,7 +170,7 @@ function App() {
 
     return 0
   })
-  const visibleMenuItems = showAllMenuItems ? displayedMenuItems : displayedMenuItems.slice(0, 6)
+  const visibleMenuItems = showAllMenuItems ? displayedMenuItems : displayedMenuItems.slice(0, menuVisibleLimit)
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -194,6 +211,17 @@ function App() {
     loadContent()
 
     return () => abortController.abort()
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMenuVisibleLimit(getMenuVisibleLimit())
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   useLayoutEffect(() => {
@@ -748,14 +776,14 @@ function App() {
               </article>
             ))}
           </div>
-          {displayedMenuItems.length > 6 ? (
+          {displayedMenuItems.length > menuVisibleLimit ? (
             <div className="mt-8 flex justify-center">
               <button
                 type="button"
                 onClick={() => setShowAllMenuItems((currentValue) => !currentValue)}
                 className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-sand transition duration-300 hover:border-saffron hover:text-saffron"
               >
-                {showAllMenuItems ? 'Show Less' : `View More (${displayedMenuItems.length - 6} more)`}
+                {showAllMenuItems ? 'Show Less' : `View More (${displayedMenuItems.length - menuVisibleLimit} more)`}
               </button>
             </div>
           ) : null}
