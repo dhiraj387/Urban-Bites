@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  background: #110f10;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  display: block;
+}
+
+::selection {
+  background: rgba(240, 180, 93, 0.35);
+  color: #fff7ed;
+}
+
+.menu-slider-wrap {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+.menu-slider-track {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  will-change: transform;
+}
+
+.menu-slider-pill {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f4ecdf;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+
+@media (max-width: 640px) {
+  .menu-slider-wrap {
+    border-radius: 0.8rem;
+  }
+
+  .menu-slider-track {
+    gap: 0.55rem;
+    padding: 0.6rem;
+  }
+
+  .menu-slider-pill {
+    font-size: 0.7rem;
+    padding: 0.42rem 0.7rem;
+  }
+}
+
+.menu-slider-pill:hover,
+.menu-slider-pill:focus-visible {
+  border-color: rgba(240, 180, 93, 0.75);
+  color: #fff8ee;
+  background: rgba(240, 180, 93, 0.16);
+  outline: none;
+}
